@@ -1,6 +1,6 @@
 #ifndef __VESA_H_
 #define __VESA_H_
-#include "types.h"
+#include <linux/types.h>
 
 typedef struct {
 	u16 off, seg;

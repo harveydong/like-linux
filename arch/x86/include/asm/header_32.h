@@ -2,7 +2,7 @@
 #define __HEADER_32_H__
 #include <stdarg.h>
 #include "bootparam.h"
-#include "types.h"
+#include <linux/types.h>
 
 extern struct setup_header hdr;
 extern struct boot_params boot_params;

@@ -1,7 +1,8 @@
 #include <asm/video.h>
 #include <asm/header_32.h>
-#include <asm/types.h>
+#include <linux/types.h>
 #include <asm/vesa.h>
+
 static __videocard video_vesa;
 static struct vesa_general_info vginfo;
 static struct vesa_mode_info vminfo;

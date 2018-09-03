@@ -1,6 +1,6 @@
-#include <linux/types.h>
+#include <asm/types.h>
 #include <asm/kernel.h>
-#include <linux/elf32.h>
+#include <asm/elf.h>
 #include <asm/loader.h>
 
 extern void puts(char *s);
@@ -59,10 +59,7 @@ void loadmain()
 /*read　head_64.bin ,and from convert 32bit to 64bit,size is 10 num sectors from 70 ,0x8c00, for head_64.bin*/
 //	read_segment((void *)0x100000,0x8c00,0x1400);
 
-//	Elf64_Ehdr *elf = (Elf64_Ehdr*)buf;
-
-	Elf32_Ehdr *elf = (Elf32_Ehdr *)buf;
-
+	Elf64_Ehdr *elf = (Elf64_Ehdr*)buf;
 /*包括32位的代码,从head32.S开始的,没有了从32位到64位的转换,直接到32位代码*/	
 	read_sector(elf,KERNEL_ELF_LBA);
 	if(elf->e_ident[0] != 0x7f || elf->e_ident[1] != 'E' || elf->e_ident[2] != 'L' || elf->e_ident[3] != 'F'){
@@ -74,9 +71,7 @@ void loadmain()
 //	print_hex(elf->e_phnum);
 //	println();	
 
-//	Elf64_Phdr *ph = (Elf64_Phdr*)((uint8 *)elf+elf->e_phoff);
-	Elf32_Phdr *ph = (Elf32_Phdr*)((uint8 *)elf + elf->e_phoff);
-
+	Elf64_Phdr *ph = (Elf64_Phdr*)((uint8 *)elf+elf->e_phoff);
 	for(i = 0; i < elf->e_phnum;i++)
 	//for(i = 0; i < 6;i++)
 	{
@@ -97,8 +92,8 @@ void loadmain()
 		ph++;
 	}	
 
-	//my_puts("done for read kernel\n");
-	//while(1);
+//	puts("done for read kernel\n");
+//	while(1);
 	change_to_real_header();
 	
 //	kernel_entry_t entry = (kernel_entry_t)elf->e_entry;

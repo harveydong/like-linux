@@ -1,6 +1,6 @@
 #ifndef __VIDEO_H_
 #define __VIDEO_H_
-#include "types.h"
+#include <linux/types.h>
 #include "header_32.h"
 
 #define ADAPTER_CGA	0	/* CGA/MDA/HGC */

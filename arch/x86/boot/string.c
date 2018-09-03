@@ -1,4 +1,4 @@
-#include <asm/types.h>
+#include <linux/types.h>
 
 size_t strnlen(const char *s, size_t maxlen)
 {

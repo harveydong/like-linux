@@ -2,7 +2,7 @@
 AS=as --32
 
 all: start load header.bin
-INC:=-I../include
+INC:=-I../include -I../../../include/
 start:start.S
 	gcc $(INC) -m32 -c start.S
 	ld -m elf_i386 -Ttext 0x7c00 -o start.elf start.o

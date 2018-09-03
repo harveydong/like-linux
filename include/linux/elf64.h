@@ -7,6 +7,15 @@
 #define ELF_MAGIC 0x464c457f
 typedef void (*kernel_entry_t)(void);
 
+typedef __u64 Elf64_Addr;
+typedef __u16 Elf64_Half;
+typedef __s16 Elf64_SHalf;
+typedef __u64 Elf64_Off;
+typedef __s32 Elf64_Sword;
+typedef __u32 Elf64_Word;
+typedef __u64 Elf64_Xword;
+typedef __s64 Elf64_Sxword;
+
 
 typedef struct elf64_hdr{
 	unsigned char e_ident[16];
