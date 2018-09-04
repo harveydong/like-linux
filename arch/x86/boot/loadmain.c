@@ -87,8 +87,8 @@ void loadmain()
 
 		if(ph->p_type == PT_LOAD && ph->p_paddr){
 		
-		//	print_hex(ph->p_paddr);	
-		//	println();
+			print_hex(ph->p_paddr);	
+			println();
 			read_segment((void*)(long)(ph->p_paddr),elf_offset + ph->p_offset,ph->p_filesz);
 			if(ph->p_memsz > ph->p_filesz){
 				memset((void*)(long)ph->p_paddr+ph->p_offset,0,ph->p_memsz - ph->p_filesz);

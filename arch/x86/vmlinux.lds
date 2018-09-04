@@ -4,8 +4,9 @@ ENTRY(_start)
 SECTIONS
 {
   . = 0xC0000000 + 0x100000;
+ _start = stext - 0xc0000000;
   _text = .;			/* Text and read-only data */
-  .text : {
+  .text : AT(ADDR(.text) - 0xc0000000){
 	*(.text)
 	*(.fixup)
 	*(.gnu.warning)

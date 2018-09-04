@@ -15,7 +15,7 @@ CP=cp
 export CP TOPDIR HPATH AR AS nm  LD CC CPP OBJCOPY OBJDUMP MAKE
 
 CPPFLAGS:=-D__KERNEL__ -I$(HPATH) -I$(TOPDIR)/arch/x86/include 
-CFLAGS:=$(CPPFLAGS) -Wall  -O2 -m32 
+CFLAGS:=$(CPPFLAGS) -Wall  -m32 
 AFLAGS:=-D__ASSEMBLY__ $(CPPFLAGS) -I../include -m32
 
 CORE_FILES=kernel/kernel.o mm/mm.o fs/fs.o 

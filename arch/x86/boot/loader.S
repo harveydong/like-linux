@@ -170,3 +170,142 @@ real_mode_h:
 	ret
 
 
+	.code32
+
+.globl _get_current_column
+_get_current_column:
+	pushl %ebx
+	movl video_current,%eax
+	subl $0xb8000,%eax
+	movb $160,%bl
+	div %bl
+	movzbl %ah,%eax
+	popl %ebx
+	ret
+.globl _write_char
+_write_char:
+	pushl %ebx
+	movl $video_current,%ebx
+	orw $0x0f00,%si
+	cmpw $0x0f0a,%si
+	jnz do_write_char
+	call _get_current_column
+	negl %eax
+	addl $80*2,%eax
+	addl (%ebx),%eax
+	jmp do_write_char_done
+do_write_char:
+	movl (%ebx),%eax
+	cmpl $0x0b9ff0,%eax
+	ja do_write_char_done
+	movl %esi,(%eax)
+	addl $2,%eax
+
+do_write_char_done:
+	mov %eax,(%ebx)
+	popl %ebx
+	ret
+
+.globl _putc
+_putc:
+	andl $0x00ff,%esi
+	call _write_char
+	ret
+.globl puts
+puts:
+	pushl %ebx
+	movl 8(%esp),%esi
+	movl %esi,%ebx
+	testl %ebx,%ebx
+	jz do_puts_done
+
+do_puts_loop:
+	movl (%ebx),%eax
+	testb %al,%al
+	jz do_puts_done
+	movl %eax,%esi
+	call _putc
+	incl %ebx
+	jmp do_puts_loop
+do_puts_done:
+	popl %ebx
+	ret
+
+
+char_v: .byte '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F',0
+
+.globl _hex_to_char
+_hex_to_char:
+	pushl %esi
+	andl $0x0f,%esi
+	movzbl char_v(%esi),%eax
+	popl %esi
+	ret	
+
+.globl _print_byte_value
+_print_byte_value:
+	pushl %ebx
+	pushl %esi
+	movl %esi,%ebx
+	shrl $4,%esi
+	call _hex_to_char
+	movl %eax,%esi
+	call _putc
+	movl %ebx,%esi
+	call _hex_to_char
+	mov %eax,%esi
+	call _putc
+	popl %esi
+	popl %ebx
+	ret
+
+.globl _print_word_value
+_print_word_value:
+	pushl %ebx
+	pushl %esi
+	movl %esi,%ebx
+	shrl $8,%esi	
+	call _print_byte_value
+	movl %ebx,%esi
+	call _print_byte_value
+	popl %esi
+	popl %ebx
+	ret
+
+.globl _print_dword_value
+_print_dword_value:
+	pushl %ebx
+	pushl %esi
+	movl %esi,%ebx
+	shrl $16,%esi
+	call _print_word_value
+	movl %ebx,%esi
+	call _print_word_value
+	popl %esi
+	popl %ebx
+	ret
+
+.globl print_hex
+print_hex:
+	pushl %ebx
+	pushl %esi
+	movl 12(%esp),%ebx
+	movl 16(%esp),%esi
+	pushl %edi
+	movl %esi,%edi
+
+	call _print_dword_value
+	movl %ebx,%esi
+	call _print_dword_value
+
+	popl %edi
+	popl %esi
+	popl %ebx
+	ret
+	
+.globl println
+println:
+	movw $10,%si
+	call _putc
+	ret
+video_current: .long 0xb81E0

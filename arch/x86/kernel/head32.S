@@ -46,6 +46,11 @@ startup_32:
 	movl %eax,%cr4
 
 1:
+	movl $swapper_pg_dir - __PAGE_OFFSET,%edi
+	movl $0x00102007,%eax
+	stosl
+
+
 	/*initialize page tables */
 	movl $pg0 - __PAGE_OFFSET,%edi
 	movl $0x007,%eax
@@ -273,7 +278,8 @@ gdt:
 	
 
 	.org 0x1000
-ENTRY(swapper_pg_dir)
+	.globl swapper_pg_dir
+swapper_pg_dir:
 	.long 0x00102007
 	.long 0x00103007
 	.fill BOOT_USER_PGD_PTRS - 2,4,0

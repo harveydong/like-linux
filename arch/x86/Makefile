@@ -1,9 +1,9 @@
 
 LD=ld -m elf_i386
 OBJCOPY=objcopy -O binary -R .note -R .comment -S
-LDFLAGS=-e stext
+LDFLAGS=
 LINKFLAGS=-T $(TOPDIR)/arch/x86/vmlinux.lds $(LDFLAGS)
-CFLAGS += -m32
+CFLAGS += -m32 -fno-stack-protector -fno-builtin
 
 HEAD:=arch/x86/kernel/head32.o  arch/x86/kernel/init_task.o
 SUBDIRS+=arch/x86/kernel arch/x86/mm arch/x86/lib
