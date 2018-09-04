@@ -1,6 +1,6 @@
 #ifndef __TYPES_H_
 #define __TYPES_H_
-#include <asm/posix_types.h>
+#include <linux/posix_types.h>
 
 #ifndef _SIZE_T
 #define _SIZE_T
@@ -42,7 +42,7 @@ typedef unsigned int addr_t;
 typedef unsigned int size_t;
 
 #define bool int
-#define NULL 0
+#define NULL ((void*)0)
 
 
 #endif

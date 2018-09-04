@@ -14,15 +14,15 @@ NM=nm
 CP=cp
 export CP TOPDIR HPATH AR AS nm  LD CC CPP OBJCOPY OBJDUMP MAKE
 
-CPPFLAGS:=-D__KERNEL__ -I$(HPATH)
-CFLAGS:=$(CPPFLAGS) -Wall  -O2 
-AFLAGS:=-D__ASSEMBLY__ $(CPPFLAGS) -m32
+CPPFLAGS:=-D__KERNEL__ -I$(HPATH) -I$(TOPDIR)/arch/x86/include 
+CFLAGS:=$(CPPFLAGS) -Wall  -O2 -m32 
+AFLAGS:=-D__ASSEMBLY__ $(CPPFLAGS) -I../include -m32
 
 CORE_FILES=kernel/kernel.o mm/mm.o fs/fs.o 
 LIBS=$(TOPDIR)/lib/lib.a
 SUBDIRS=kernel mm fs lib
 
-CLEAN_FILES=vmlinux System.map .tmp* submenu*
+CLEAN_FILES=submenu* vmlinux System.map .tmp* 
 CLEAN_DIRS=modules
 
 export CPPFLAGS CFLAGS AFLAGS
@@ -66,11 +66,11 @@ fs lib kernel mm:dummy
 include rules.make
 
 clean: archclean
-	find . \( -name '*.[oas]' -o -name core -o -name '.*.flags' \) -type f -print  |xargs rm -f
 	rm -f $(CLEAN_FILES)
+	find . \( -name '*.[oas]' -o -name core -o -name '.*.flags' \) -type f -print  |xargs rm -f
 	#rm -rf $(CLEAN_DIRS)
 	rm -rf start load header.bin vmlinux 	System.map
-
+	
 install:
 	dd if=start of=c.img bs=512 conv=notrunc
 	dd if=load of=c.img bs=512 seek=1 conv=notrunc

@@ -70,7 +70,6 @@ void go_to_protected_mode(void)
 		die();
 	}
 	my_puts("I am pm now\n");
-	while(1);	
 	printf("code32_start addr: 0x%x\n",boot_params.hdr.code32_start);	
 	reset_coprocessor();
 	mask_all_interrupts();

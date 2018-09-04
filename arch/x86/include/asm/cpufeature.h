@@ -17,5 +17,6 @@
 #define X86_FEATURE_MSR		(0*32+ 5)
 #define X86_FEATURE_FXSR	(0*32+24)
 
+#define NCAPINTS 4
 
 #endif
